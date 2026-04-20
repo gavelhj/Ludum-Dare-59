@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+@export var no_signal: bool
+@export var jammed: bool
+
 var move_dir = 0 # moving forward or backward
 var rotate_dir = 0 # turning left or right
 
@@ -19,11 +22,22 @@ func update_direction() -> void:
 
 func _physics_process(delta) -> void:
 	if not movement_queued:
-		update_direction()
+		if not no_signal:
+			update_direction()
+		else:
+			move_dir = 0
+			rotate_dir = 0
+		
+		if jammed: # around 1 in 2 chance to get movement overwritten
+			if randi_range(1, 2) >= 2:
+				move_dir = randf() * randi_range(-1, 1)
+				rotate_dir = randf() * randi_range(-1, 1)
+			print("jammed")
 		
 		# prioritise rotating
 		if abs(move_dir) - abs(rotate_dir) <= 0.1 and abs(rotate_dir) >= 0.3:
 			movement_queued = true
+			rotate_dir = 1 * sign(rotate_dir)
 			move_dir = 0
 			
 			rotate_start = rotation
@@ -31,6 +45,7 @@ func _physics_process(delta) -> void:
 			
 		elif abs(move_dir) >= 0.3:
 			movement_queued = true
+			move_dir = 1 * sign(move_dir)
 			rotate_dir = 0
 			
 			move_start = position
