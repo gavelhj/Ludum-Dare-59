@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
-@export var no_signal: bool
-@export var jammed: bool
+var no_signal = false
+var jammed = false
+@export var cancel = false
 
 var move_dir = 0 # moving forward or backward
 var rotate_dir = 0 # turning left or right
@@ -20,19 +21,22 @@ func update_direction() -> void:
 	move_dir = Input.get_axis('ui_down', 'ui_up')
 	rotate_dir = Input.get_axis('ui_left', 'ui_right')
 
+func jam() -> void:
+	if randi_range(1, 2) >= 2:
+		move_dir = randf() * randi_range(-1, 1)
+		rotate_dir = randf() * randi_range(-1, 1)
+
 func _physics_process(delta) -> void:
+	jammed = get_tile_data(&"jammed", position)
+	no_signal = get_tile_data(&"no_signal", position)
 	if not movement_queued:
 		if not no_signal:
 			update_direction()
 		else:
 			move_dir = 0
 			rotate_dir = 0
-		
 		if jammed: # around 1 in 2 chance to get movement overwritten
-			if randi_range(1, 2) >= 2:
-				move_dir = randf() * randi_range(-1, 1)
-				rotate_dir = randf() * randi_range(-1, 1)
-			print("jammed")
+			jam()
 		
 		# prioritise rotating
 		if abs(move_dir) - abs(rotate_dir) <= 0.1 and abs(rotate_dir) >= 0.3:
@@ -52,6 +56,11 @@ func _physics_process(delta) -> void:
 			move_end = position + Vector2(cos(rotation), sin(rotation)) * globals.tile_size * move_dir
 	
 	if movement_queued:
+		if cancel == true:
+			cancel = false 
+			alpha = 0
+			move_end = move_start
+			move_start = position
 		alpha += delta * globals.time_multipler * animation_speed
 	
 		if alpha > 1:
@@ -59,10 +68,23 @@ func _physics_process(delta) -> void:
 			
 		if move_dir != 0:
 			position = lerp(move_start, move_end, alpha)
+			if alpha != 1:
+				cancel = get_tile_data("wall", move_end)
 			
 		elif rotate_dir != 0:
 			rotation = lerp(rotate_start, rotate_end, alpha)
 			
 	if alpha == 1:
+		cancel = false
 		alpha = 0
 		movement_queued = false
+
+func get_tile_data(data_name, location):
+	var tilemap: TileMapLayer = get_tree().get_first_node_in_group("tilemap")
+	
+	# tile player is standing on
+	var cell := tilemap.local_to_map(location)
+	var data: TileData = tilemap.get_cell_tile_data(cell)
+	
+	if data:
+		return data.get_custom_data(data_name)
