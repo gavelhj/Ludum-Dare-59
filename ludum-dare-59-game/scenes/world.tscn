@@ -1,18 +1,20 @@
 [gd_scene load_steps=5 format=4 uid="uid://c1guh705un5os"]
 
 [ext_resource type="PackedScene" uid="uid://b00xdkk8vrek8" path="res://resources idk the name/player.tscn" id="1_nnsk1"]
-[ext_resource type="Texture2D" uid="uid://cqxuphfj7y7x6" path="res://sprites/tile.png" id="2_rwgxs"]
+[ext_resource type="Texture2D" uid="uid://mn7p6jdhhde4" path="res://sprites/tile-export.png" id="2_rwgxs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
 texture = ExtResource("2_rwgxs")
-0:0/0 = 0
-0:0/0/custom_data_0 = true
+texture_region_size = Vector2i(32, 32)
 1:0/0 = 0
 1:0/0/custom_data_1 = true
+0:0/0 = 0
+0:0/0/custom_data_0 = true
 2:0/0 = 0
 2:0/0/custom_data_2 = true
 
 [sub_resource type="TileSet" id="TileSet_nnsk1"]
+tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "jammed"
 custom_data_layer_0/type = 1
@@ -20,15 +22,16 @@ custom_data_layer_1/name = "no_signal"
 custom_data_layer_1/type = 1
 custom_data_layer_2/name = "wall"
 custom_data_layer_2/type = 1
-sources/4 = SubResource("TileSetAtlasSource_4wyf3")
+sources/0 = SubResource("TileSetAtlasSource_4wyf3")
 
 [node name="World" type="Node2D"]
 position = Vector2(136, 120)
 
 [node name="Player" parent="." instance=ExtResource("1_nnsk1")]
+position = Vector2(8, 8)
 
 [node name="effects" type="TileMapLayer" parent="." groups=["tilemap"]]
 position = Vector2(-8, -8)
-tile_map_data = PackedByteArray("AAD+////BAAAAAAAAAD9////BAAAAAAAAAD8////BAAAAAAAAAD8//7/BAAAAAAAAAD9//7/BAAAAAAAAAD9//3/BAAAAAAAAAD+//3/BAAAAAAAAAD///z/BAAAAAAAAAD9/wEABAABAAAAAAD8/wEABAABAAAAAAD7/wEABAABAAAAAAACAP3/BAACAAAAAAACAP7/BAACAAAAAAACAP//BAACAAAAAAACAAAABAACAAAAAAACAAEABAACAAAAAAACAAIABAACAAAAAAA=")
+tile_map_data = PackedByteArray("AAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAADAPz/AAACAAAAAAADAP3/AAACAAAAAAADAP7/AAACAAAAAAADAP//AAACAAAAAAADAAAAAAACAAAAAAADAAEAAAAAAAAAAAD9/wIAAAABAAAAAAACAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAP//AAAAAAAAAAAFAP7/AAAAAAAAAAAFAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAA=")
 tile_set = SubResource("TileSet_nnsk1")
 collision_enabled = false
