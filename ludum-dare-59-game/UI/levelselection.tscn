@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://csx6ctwgvdx26"]
+[gd_scene load_steps=2 format=3 uid="uid://csx6ctwgvdx26"]
+
+[ext_resource type="Script" uid="uid://dbsd0a6y5vqmo" path="res://components/scenechangeComponent.gd" id="1_fd3b1"]
 
 [node name="levelselection" type="Control"]
 layout_mode = 3
@@ -7,3 +9,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="test" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 520.0
+offset_bottom = 168.0
+
+[node name="SceneChangeComponent" type="Node" parent="test" node_paths=PackedStringArray("button")]
+script = ExtResource("1_fd3b1")
+button = NodePath("..")
+scene_path = "scenes/world"
+metadata/_custom_type_script = "uid://dbsd0a6y5vqmo"
+
+[node name="Label" type="Label" parent="test"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "abcd"
