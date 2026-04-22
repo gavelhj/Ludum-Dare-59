@@ -14,7 +14,7 @@ var rotate_start = 0
 var rotate_end = 0
 
 var alpha = 0 # movement timer
-var animation_speed = 5
+var animation_speed = 3
 var movement_queued = false # give time for animation
 
 func update_direction() -> void:
