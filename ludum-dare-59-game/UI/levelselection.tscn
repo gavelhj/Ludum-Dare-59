@@ -12,8 +12,8 @@ grow_vertical = 2
 
 [node name="test" type="TextureButton" parent="."]
 layout_mode = 0
-offset_right = 520.0
-offset_bottom = 168.0
+offset_right = 80.0
+offset_bottom = 24.0
 
 [node name="SceneChangeComponent" type="Node" parent="test" node_paths=PackedStringArray("button")]
 script = ExtResource("1_fd3b1")
@@ -25,4 +25,4 @@ metadata/_custom_type_script = "uid://dbsd0a6y5vqmo"
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "abcd"
+text = "test place"

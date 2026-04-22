@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var no_signal = false
 var jammed = false
-@export var cancel = false
+var cancel = false
 
 var move_dir = 0 # moving forward or backward
 var rotate_dir = 0 # turning left or right
@@ -29,6 +29,7 @@ func jam() -> void:
 func _physics_process(delta) -> void:
 	jammed = get_tile_data(&"jammed", position)
 	no_signal = get_tile_data(&"no_signal", position)
+	# decide movements
 	if not movement_queued:
 		if not no_signal:
 			update_direction()
@@ -38,7 +39,6 @@ func _physics_process(delta) -> void:
 		if jammed: # around 1 in 2 chance to get movement overwritten
 			jam()
 		
-		# prioritise rotating
 		if abs(move_dir) - abs(rotate_dir) <= 0.1 and abs(rotate_dir) >= 0.3:
 			movement_queued = true
 			rotate_dir = 1 * sign(rotate_dir)
@@ -55,6 +55,7 @@ func _physics_process(delta) -> void:
 			move_start = position
 			move_end = position + Vector2(cos(rotation), sin(rotation)) * globals.tile_size * move_dir
 	
+	# make movements
 	if movement_queued:
 		if cancel == true:
 			cancel = false 
@@ -74,6 +75,8 @@ func _physics_process(delta) -> void:
 		elif rotate_dir != 0:
 			rotation = lerp(rotate_start, rotate_end, alpha)
 			
+	
+	# end movements
 	if alpha == 1:
 		cancel = false
 		alpha = 0
